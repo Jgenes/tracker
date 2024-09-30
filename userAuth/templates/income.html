@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+
+{% block content %}
+
+            <a href="{% url 'addIncome' %}"> Add New </a>  <!-- Fixed URL syntax -->
+
+            {% if income %}
+          <div class="container mt-5">
+    <div class="row">
+        {% for listing in income %}
+            <div class="col-md-4 mb-4">  <!-- Adjust the column size for different screen sizes -->
+                <div class="card"> 
+                    <div class="card-title text-center">  <!-- Center the title -->
+                        <h5>{{ listing.title }}</h5>
+                        <p>{{ listing.price }} Tzs</p>
+                    </div>
+                    <div class="card-body"> 
+                        <p>{{ listing.description }}</p>
+                        <p class="text-center">  <!-- Center the action buttons -->
+                            <a href="{% url 'editIncome' listing.id %}">
+                                <i class="fa-solid fa-pen-to-square btn btn-primary"></i>
+                            </a> ||  
+                            <a href="{% url 'deleteIncome' listing.id %}" onclick="return confirm('Are you sure you want to delete this item?');">
+                                <i class="fa-solid fa-delete-left btn btn-danger"></i>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+            {% else %}
+                <p>No Expenses recorded</p>
+            {% endif %}
+
+{% endblock %}

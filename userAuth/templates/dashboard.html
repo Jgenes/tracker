@@ -1,0 +1,133 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+
+{% block content %}
+
+    <div class="container mt-5">
+          <div class="row justify-content-center">
+            <h5 class="d-h5"> <i class="fa-solid fa-user"></i> &nbsp; {{ username }}&nbsp;<sup class="text-success">(Online)</sup></h5>
+
+            <div class="card-container">
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title"> Expenses</h5>
+                      <p class="card-text"><i class="fa-solid fa-money-bills"></i> &nbsp; Tsh {{ total_expenses }}</p>
+                  </div>
+              </div>
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title"> Incomes</h5>
+                      <p class="card-text"><i class="fa-solid fa-money-bill-trend-up"></i> &nbsp;Tsh {{ total_expenses }}</p>
+                  </div>
+              </div>
+              <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">Balance</h5>
+                      <p class="card-text"><i class="fa-solid fa-money-bill-transfer"></i> &nbsp; Tsh 500,000</p>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center mt-2">
+         <div class="col-md-6">
+            <div id="columnchart_material" style="width: 530px; height: 350px;"></div>
+
+          </div>
+
+         <div class="col-md-6">
+
+             <div class="calendar">
+        <div class="calendar-header">
+            <button onclick="prevMonth()">&#8249;</button>
+            <h3 id="month-year"></h3>
+            <button onclick="nextMonth()">&#8250;</button>
+        </div>
+        <div class="days" id="calendar-days">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+        </div>
+    </div>
+    
+
+          </div>
+      </div>
+
+
+ <script>
+        const calendarDays = document.getElementById('calendar-days');
+        const monthYear = document.getElementById('month-year');
+
+        let date = new Date();
+        let currentMonth = date.getMonth();
+        let currentYear = date.getFullYear();
+
+        const renderCalendar = (month, year) => {
+            calendarDays.innerHTML = `
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            `;
+
+            monthYear.textContent = `${date.toLocaleString('default', { month: 'long' })} ${year}`;
+
+            let firstDay = new Date(year, month, 1).getDay();
+            let daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                calendarDays.appendChild(emptyCell);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.textContent = day;
+                dayElement.classList.add('day');
+
+                if (
+                    day === date.getDate() &&
+                    month === date.getMonth() &&
+                    year === date.getFullYear()
+                ) {
+                    dayElement.classList.add('today');
+                }
+
+                calendarDays.appendChild(dayElement);
+            }
+        };
+
+        const prevMonth = () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar(currentMonth, currentYear);
+        };
+
+        const nextMonth = () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar(currentMonth, currentYear);
+        };
+
+        renderCalendar(currentMonth, currentYear);
+    </script>
+
+{% endblock%}
